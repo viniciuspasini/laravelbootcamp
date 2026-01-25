@@ -118,15 +118,21 @@ gh pr create --title "Aula 01: Instalação e Configuração do Laravel" \
 
 ### **PASSO 5: Revisar e Aprovar o Pull Request**
 
-**Simulando revisão de código:**
+**⚠️ IMPORTANTE: Limitação do GitHub**
+
+O GitHub **NÃO permite** que você aprove suas próprias Pull Requests. Esta é uma proteção para garantir Code Review por outra pessoa.
+
+**Como você está estudando sozinho, há duas opções:**
+
+#### **Opção A: Pular a Aprovação (Recomendado para Estudo)**
 
 1. No GitHub, acesse o Pull Request criado
 2. Vá na aba **"Files changed"**
-3. Revise as mudanças (mesmo sendo você o autor, pratique!)
-4. Adicione comentários se necessário
-5. Clique em **"Review changes"** → **"Approve"**
+3. Revise as mudanças (pratique a leitura do código!)
+4. Adicione comentários para si mesmo se quiser
+5. **Pule direto para o Passo 6** (Fazer Merge)
 
-**Ou pelo CLI:**
+**Pelo CLI:**
 
 ```bash
 # Listar PRs abertos
@@ -135,9 +141,22 @@ gh pr list
 # Ver detalhes do PR
 gh pr view 1
 
-# Aprovar o PR
-gh pr review 1 --approve --body "Código revisado. Aula concluída com sucesso! ✅"
+# Adicionar comentário (mas não aprovar)
+gh pr comment 1 --body "Código revisado. Implementação correta! ✅"
+
+# Ir direto para o merge (próximo passo)
 ```
+
+#### **Opção B: Desabilitar Proteções de Branch**
+
+Se você configurou proteções que exigem aprovação:
+
+1. Acesse: **Settings** → **Branches** → **Branch protection rules**
+2. Edite a regra da branch `main`
+3. Desmarque: **"Require approvals before merging"**
+4. Salve
+
+**Nota:** Só faça isso em repositórios pessoais de estudo!
 
 ---
 
@@ -146,9 +165,9 @@ gh pr review 1 --approve --body "Código revisado. Aula concluída com sucesso! 
 **Opção A - Pelo GitHub:**
 1. No Pull Request, clique em **"Merge pull request"**
 2. Escolha o tipo de merge:
-   - **Create a merge commit** (recomendado para aprendizado)
-   - **Squash and merge** (junta todos os commits em um)
-   - **Rebase and merge** (mantém histórico linear)
+    - **Create a merge commit** (recomendado para aprendizado)
+    - **Squash and merge** (junta todos os commits em um)
+    - **Rebase and merge** (mantém histórico linear)
 3. Confirme o merge
 4. **Marque a opção:** "Delete branch" (opcional, mas recomendado)
 
@@ -263,10 +282,11 @@ gh pr create \
   --base main \
   --head aula-XX-nome-descritivo
 
-# === APROVAR E MERGEAR ===
-gh pr list
-gh pr review NUMERO_DO_PR --approve --body "Aprovado!"
-gh pr merge NUMERO_DO_PR --merge --delete-branch
+# === REVISAR E MERGEAR ===
+gh pr list                                              # Listar PRs
+gh pr view NUMERO_DO_PR                                 # Ver detalhes
+gh pr comment NUMERO_DO_PR --body "Código revisado!"   # Comentar (opcional)
+gh pr merge NUMERO_DO_PR --merge --delete-branch        # Fazer merge
 
 # === ATUALIZAR MAIN LOCAL ===
 git checkout main
@@ -332,10 +352,11 @@ php artisan migrate
   --base main \
   --head aula-03-models-migrations
 
-# 5. APROVAR E MERGEAR
+# 5. REVISAR E MERGEAR
 gh pr list
-gh pr review 3 --approve --body "Models e migrations bem implementados! ✅"
-gh pr merge 3 --merge --delete-branch
+gh pr view 3                                                          # Ver detalhes da PR
+gh pr comment 3 --body "Models e migrations bem implementados! ✅"   # Comentar (opcional)
+gh pr merge 3 --merge --delete-branch                                # Fazer merge
 
 # 6. ATUALIZAR LOCAL
 git checkout main
@@ -438,16 +459,16 @@ git diff --name-only v0.2.0..v0.3.0
 ### No GitHub:
 
 1. **Pull Requests**: https://github.com/viniciuspasini/laravelbootcamp/pulls
-   - Histórico de todas as aulas
+    - Histórico de todas as aulas
 
 2. **Releases**: https://github.com/viniciuspasini/laravelbootcamp/releases
-   - Marcos importantes do aprendizado
+    - Marcos importantes do aprendizado
 
 3. **Network Graph**: https://github.com/viniciuspasini/laravelbootcamp/network
-   - Visualização gráfica do fluxo de branches
+    - Visualização gráfica do fluxo de branches
 
 4. **Insights → Contributors**:
-   - Estatísticas de commits
+    - Estatísticas de commits
 
 ---
 
@@ -475,6 +496,32 @@ git diff --name-only v0.2.0..v0.3.0
 ---
 
 ## 🚨 Resolução de Problemas
+
+### Não consigo aprovar minha própria Pull Request
+
+**Problema:**
+```bash
+gh pr review 1 --approve
+# Erro: GraphQL: Review cannot be created for the author of the pull request
+```
+
+**Causa:** O GitHub não permite aprovar suas próprias PRs por questões de segurança.
+
+**Solução:**
+
+```bash
+# Opção 1: Adicionar comentário e fazer merge direto
+gh pr comment 1 --body "Código revisado. Tudo OK! ✅"
+gh pr merge 1 --merge --delete-branch
+
+# Opção 2: Fazer merge sem aprovação pelo GitHub web
+# Vá na PR e clique direto em "Merge pull request"
+
+# Opção 3: Se tiver proteções na branch, desabilitar temporariamente
+# Settings → Branches → Edit rule → Desmarcar "Require approvals"
+```
+
+---
 
 ### PR com conflitos
 
