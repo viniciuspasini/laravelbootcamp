@@ -1,11 +1,21 @@
 <?php
 
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LessonController;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'home', ['title' => 'Home'])->name('home');
-Route::view('/course', 'course', ['title' => 'Course'])->name('course');
-Route::view('/lesson', 'lesson', ['title' => 'Lesson'])->name('lesson');
-Route::view('/courses', 'courses', ['title' => 'Courses'])->name('courses');
-Route::view('/contact', 'contact', ['title' => 'Contact'])->name('contact');
-Route::view('/login', 'login', ['title' => 'Login'])->name('login');
-Route::view('/checkout', 'checkout', ['title' => 'Checkout'])->name('checkout');
+Route::controller(HomeController::class)->name('home.')->group(function () {
+    Route::get('/', 'index')->name('index');
+});
+
+Route::resource('courses', CoursesController::class);
+Route::resource('course', CourseController::class);
+Route::resource('lesson', LessonController::class);
+Route::resource('contact', ContactController::class);
+Route::resource('login', LoginController::class);
+Route::resource('checkout', CheckoutController::class);
