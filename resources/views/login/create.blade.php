@@ -4,7 +4,8 @@
         <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
             <h1 class="text-3xl font-bold text-center mb-6">Entrar na sua conta</h1>
 
-            <form method="POST" action="#" class="space-y-5">
+            <form method="POST" action="{{route('login.store')}}" class="space-y-5">
+                @csrf
                 <!-- E-mail -->
                 <div>
                     <label for="email" class="block text-sm font-medium mb-1">E-mail</label>
@@ -18,6 +19,7 @@
                         class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-indigo-500"
                         placeholder="seu@email.com"
                     >
+                    @error('email') <span class="text-red-600 italic text-center">{{$message}}</span> @enderror
                 </div>
 
                 <!-- Senha -->
@@ -31,6 +33,7 @@
                         class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-indigo-500"
                         placeholder="••••••••"
                     >
+                    @error('password') <span class="text-red-600 italic text-center">{{$message}}</span> @enderror
                 </div>
 
                 <!-- Lembrar login -->
