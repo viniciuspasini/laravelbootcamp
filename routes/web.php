@@ -17,5 +17,6 @@ Route::resource('courses', CoursesController::class);
 Route::resource('course', CourseController::class);
 Route::resource('lesson', LessonController::class);
 Route::resource('contact', ContactController::class);
-Route::resource('login', LoginController::class);
+Route::resource('login', LoginController::class)->only(['create', 'store']);
+Route::delete('/logout', [LoginController::class, 'destroy'])->name('login.destroy');
 Route::resource('checkout', CheckoutController::class);
