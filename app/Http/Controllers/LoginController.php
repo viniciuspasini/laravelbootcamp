@@ -31,7 +31,7 @@ class LoginController extends Controller
     {
         $credentials = $request->safe()->only(['email', 'password']);
 
-        if(Auth::attempt($credentials)){
+        if(Auth::attempt($credentials, $request->has('remember'))){
             $request->session()->regenerate();
 
             return redirect()->intended('/');
@@ -76,6 +76,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login.create');
+        return redirect()->route('login');
     }
 }

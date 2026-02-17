@@ -9,14 +9,27 @@ use App\Http\Controllers\LessonController;
 use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
-Route::controller(HomeController::class)->name('home.')->group(function () {
-    Route::get('/', 'index')->name('index');
+Route::middleware('auth')->group(function () {
+
+    Route::controller(HomeController::class)->name('home.')->group(function () {
+        Route::get('/', 'index')->name('index');
+    });
+
+    Route::resource('courses', CoursesController::class);
+    Route::resource('course', CourseController::class);
+    Route::resource('lesson', LessonController::class);
+    Route::resource('contact', ContactController::class);
+    Route::resource('checkout', CheckoutController::class);
+    Route::delete('/logout', [LoginController::class, 'destroy'])->name('login.destroy')->middleware('auth');
+
 });
 
-Route::resource('courses', CoursesController::class);
-Route::resource('course', CourseController::class);
-Route::resource('lesson', LessonController::class);
-Route::resource('contact', ContactController::class);
-Route::resource('login', LoginController::class)->only(['create', 'store']);
-Route::delete('/logout', [LoginController::class, 'destroy'])->name('login.destroy');
-Route::resource('checkout', CheckoutController::class);
+
+Route::controller(LoginController::class)->middleware('guest')->group(function () {
+
+    Route::get('/login', 'create')->name('login');
+    Route::post('/login', 'store')->name('login.store');
+
+});
+
+

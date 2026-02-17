@@ -37,7 +37,7 @@
                 </div>
 
             @else
-                <a href="{{route('login.create')}}" class="hover:text-indigo-600">Login</a>
+                <a href="{{route('login')}}" class="hover:text-indigo-600">Login</a>
             @endauth
 
         </nav>
