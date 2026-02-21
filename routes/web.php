@@ -4,6 +4,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\LoginController;
@@ -21,7 +22,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('contact', ContactController::class);
     Route::resource('checkout', CheckoutController::class);
     Route::delete('/logout', [LoginController::class, 'destroy'])->name('login.destroy')->middleware('auth');
-
 });
 
 
@@ -29,6 +29,10 @@ Route::controller(LoginController::class)->middleware('guest')->group(function (
 
     Route::get('/login', 'create')->name('login');
     Route::post('/login', 'store')->name('login.store');
+    Route::get('/forgot-password', [ForgotPasswordController::class, 'index'])->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->name('password.email');
+    Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'edit'])->name('password.reset');
+    Route::put('/reset-password', [ForgotPasswordController::class, 'update'])->name('password.update');
 
 });
 

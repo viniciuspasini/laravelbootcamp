@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\ForgotPasswordNotification;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -66,5 +68,12 @@ class User extends Authenticatable
     public function replies(): HasMany
     {
         return $this->hasMany(Reply::class);
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $url = 'http://laravelbootcamp.test/reset-password?token='.$token;
+
+        $this->notify(new ForgotPasswordNotification($url));
     }
 }
