@@ -21,19 +21,42 @@ Route::middleware('auth')->group(function () {
     Route::resource('lesson', LessonController::class);
     Route::resource('contact', ContactController::class);
     Route::resource('checkout', CheckoutController::class);
-    Route::delete('/logout', [LoginController::class, 'destroy'])->name('login.destroy')->middleware('auth');
 });
 
 
-Route::controller(LoginController::class)->middleware('guest')->group(function () {
+Route::controller(LoginController::class)->group(function () {
 
-    Route::get('/login', 'create')->name('login');
-    Route::post('/login', 'store')->name('login.store');
-    Route::get('/forgot-password', [ForgotPasswordController::class, 'index'])->name('password.request');
-    Route::post('/forgot-password', [ForgotPasswordController::class, 'store'])->name('password.email');
-    Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'edit'])->name('password.reset');
-    Route::put('/reset-password', [ForgotPasswordController::class, 'update'])->name('password.update');
+    Route::middleware('guest')
+        ->prefix('login')
+        ->name('login.')
+        ->group(function () {
 
+        Route::get('/', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+
+    });
+
+    Route::middleware('auth')->group(function () {
+        Route::delete('/logout', 'destroy')->name('login.destroy')->middleware('auth');
+    });
+
+});
+
+Route::controller(ForgotPasswordController::class)
+    ->middleware('guest')
+    ->prefix('forgot-password')
+    ->name('password.')
+    ->group(function () {
+
+    Route::get('/', 'index')->name('request');
+    Route::post('/', 'store')->name('email');
+    Route::get('/{token}', 'edit')->name('reset');
+    Route::put('/', 'update')->name('update');
+
+});
+
+Route::fallback(function () {
+   return view('errors.404', ['title' => '404']);
 });
 
 

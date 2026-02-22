@@ -83,7 +83,7 @@ class ForgotPasswordController extends Controller
         );
 
         return $status === Password::PasswordReset
-            ? redirect()->route('login')->with('status', __($status))
+            ? redirect()->route('login.create')->with('status', __($status))
             : back()->withErrors(['email' => [__($status)]]);
     }
 
